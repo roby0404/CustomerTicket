@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <customer_ticket_configuration>
+            <ticket_configuration>
+                <enable_urgency_indicator>1</enable_urgency_indicator>
+            </ticket_configuration>
+            <requests>
+                <enable_ticket_reopen_requests>1</enable_ticket_reopen_requests>
+            </requests>
+        </customer_ticket_configuration>
+    </default>
+</config>

@@ -1,0 +1,16 @@
+<h2><span style="text-decoration: underline;">Replies</span>:</h2>
+
+<?php if($block->hasReplies()): foreach($block->replyList() as $reply): ?>
+
+    <hr />
+    <h3><?php if(is_null($reply['admin_id'])): echo "Customer"; else: echo "Admin(You)"; endif; ?> replied:</h3>
+    <?= $block->formatDate($reply['created_at'], 3, true) ?><br />
+    <?= $block->escapeHtml($reply['reply_message']) ?>
+
+<?php endforeach; ?>
+    <hr />
+<?php else: ?>
+
+<p><?= __('No replies on this ticket') ?></p>
+
+<?php endif; ?>

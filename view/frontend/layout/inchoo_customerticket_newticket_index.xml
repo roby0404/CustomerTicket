@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account" />
+    <head>
+        <title>My Tickets</title>
+    </head>
+    <body>
+        <referenceContainer name="columns.top">
+            <block class="Inchoo\CustomerTicket\Block\NewTicket" name="page.main.title" template="Inchoo_CustomerTicket::title.phtml" />
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Inchoo\CustomerTicket\Block\NewTicket" name="new_ticket" template="Inchoo_CustomerTicket::new_ticket.phtml" />
+        </referenceContainer>
+    </body>
+</page>

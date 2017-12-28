@@ -1,0 +1,23 @@
+<?php if($block->getTicket()): ?>
+    <?php if(!$block->isClosed() && !$block->isReopenRequested()): ?>
+        <a style="text-decoration: none;" href="<?= $block->escapeUrl($block->getTicketCloseUrl()); ?>">
+            <button type="button" title="Close Ticket" class="primary">
+                <span>Close Ticket</span>
+            </button>
+        </a><br/>
+    <?php endif; ?>
+
+    <?php if($block->isClosed() && $block->isReopenEnabled()): ?>
+        <a style="text-decoration: none;" href="<?= $block->escapeUrl($block->getReopenRequestUrl()); ?>">
+            <button type="button" title="Ticket Reopen Request" class="primary">
+                <span>Send Ticket Reopen Request</span>
+            </button>
+        </a>
+    <?php endif; ?>
+
+    <h2 style="text-decoration: underline;">Ticket Subject</h2>
+    <p style="font-size: medium;"><?= $block->escapeHtml($block->getTicket()->getTicketSubject()); ?></p>
+
+    <h2 style="text-decoration: underline;">Ticket Message</h2>
+    <p style="font-size: medium;"><?= $block->escapeHtml($block->getTicket()->getTicketMessage()); ?></p>
+<?php endif; ?>

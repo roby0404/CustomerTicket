@@ -1,0 +1,24 @@
+<?php if(!$block->isClosed() && !$block->isReopenRequested()): ?>
+<form data-mage-init='{"validation":{}}' method="post" action="<?= $block->escapeUrl($block->getSubmitUrl()); ?>" style="margin-top: 50px;">
+
+    <fieldset class="fieldset">
+
+        <div class="field name required">
+            <label class="label" for="ticket_reply"><span>Ticket Reply</span></label>
+            <div class="control">
+                <textarea name="reply" style="resize: none;" rows="5" cols="5" id="ticket_reply" data-validate='{"required":true}'></textarea>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" title="Submit Reply" class="action submit primary">
+                <span>Submit Reply</span>
+            </button>
+        </div>
+    </div>
+
+</form>
+<?php endif; ?>

@@ -1,0 +1,120 @@
+<?xml version="1.0" ?>
+
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">customerticket_ticket_view.ticket_view_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+
+    <settings>
+        <namespace>customerticket_ticket_view</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>customerticket_ticket_view.ticket_view_data_source</dep>
+        </deps>
+        <buttons>
+            <button name="back">
+                <label>Back</label>
+                <class>back</class>
+                <url path="ticket/tickets/index" />
+            </button>
+
+            <button name="close" class="Inchoo\CustomerTicket\Block\Adminhtml\Ticket\Close" />
+
+            <button name="reopen" class="Inchoo\CustomerTicket\Block\Adminhtml\Ticket\Reopen" />
+
+            <button name="save">
+                <label>Send reply</label>
+                <class>send primary</class>
+                <url path="ticket/ticket/sendreply" />
+            </button>
+        </buttons>
+    </settings>
+
+    <dataSource name="ticket_view_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="ticket/ticket/sendreply" />
+        </settings>
+        <dataProvider class="Inchoo\CustomerTicket\Ui\Component\TicketDataProvider" name="ticket_view_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>ticket_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <fieldset name="general">
+        <settings>
+            <label />
+        </settings>
+
+        <hidden name="ticket_id" sortOrder="1">
+            <settings>
+                <dataScope>ticket_id</dataScope>
+            </settings>
+        </hidden>
+
+        <field name="customer_name" formElement="input" sortOrder="10">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Customer</label>
+                <dataScope>customer_name</dataScope>
+            </settings>
+        </field>
+
+        <field name="customer_email" formElement="input" sortOrder="20">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Customer email</label>
+                <dataScope>customer_email</dataScope>
+            </settings>
+        </field>
+
+        <field name="created_at" formElement="input" sortOrder="30">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Submitted</label>
+                <dataScope>created_at</dataScope>
+            </settings>
+        </field>
+
+        <field name="ticket_subject" formElement="input" sortOrder="40">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Ticket Subject</label>
+                <dataScope>ticket_subject</dataScope>
+            </settings>
+        </field>
+
+        <field name="ticket_message" formElement="input" sortOrder="50">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Ticket Message</label>
+                <dataScope>ticket_message</dataScope>
+            </settings>
+        </field>
+
+    </fieldset>
+
+    <htmlContent name="replies">
+        <block name="replies_block" class="Inchoo\CustomerTicket\Block\TicketReplies" template="Inchoo_CustomerTicket::ticket_replies.phtml" />
+    </htmlContent>
+
+    <textarea name="reply_message" class="Inchoo\CustomerTicket\Ui\Component\Form\Element\Textarea">
+        <settings>
+            <label translate="true">Ticket Reply</label>
+            <cols>20</cols>
+            <rows>15</rows>
+            <dataScope>reply_message</dataScope>
+        </settings>
+    </textarea>
+
+</form>

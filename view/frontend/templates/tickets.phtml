@@ -1,0 +1,30 @@
+<a style="text-decoration: none;" href="<?= $block->escapeUrl($block->getNewTicketFormLink()); ?>">
+    <button type="button" title="Submit New Ticket" class="primary">
+        <span>Submit New Ticket</span>
+    </button>
+</a>
+
+<?php if($block->hasTickets()): ?>
+<table>
+
+    <thead>
+        <th>Subject</th>
+        <th>Status</th>
+        <th>Created at</th>
+    </thead>
+
+    <?php foreach($block->ticketList() as $ticket): ?>
+
+            <tr>
+                <td><a href="<?= $block->escapeUrl($block->getUrl($block->getTicketUrl(), ['id' => $ticket['ticket_id']])) ?>"><?= $block->escapeHtml($ticket['ticket_subject']) ?></a></td>
+                <td><?= $block->escapeHtml(ucfirst($ticket['ticket_status'])) ?></td>
+                <td><?= $block->formatDate($ticket['created_at'], 3, true) ?></td>
+            </tr>
+
+    <?php endforeach; ?>
+    </tbody>
+
+</table>
+<?php else: ?>
+    <h3><?= __('You do not have any submitted tickets'); ?></h3>
+<?php endif; ?>

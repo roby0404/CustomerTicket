@@ -1,0 +1,44 @@
+
+<form data-mage-init='{"validation":{}}' method="post" action="<?= $block->escapeUrl($block->getSubmitUrl()) ?>" >
+
+    <fieldset class="fieldset">
+
+        <div class="field name required">
+            <label class="label" for="ticket_subject"><span>Ticket Subject</span></label>
+            <div class="control">
+                <input name="subject" type="text" id="ticket_subject" data-validate='{"required":true}' />
+            </div>
+        </div>
+
+        <div class="field name required">
+            <label class="label" for="ticket_message"><span>Ticket Message</span></label>
+            <div class="control">
+                <textarea name="message" style="resize: none;" rows="5" cols="5" id="ticket_message" data-validate='{"required":true}'></textarea>
+            </div>
+        </div>
+
+        <?php if($block->isTicketUrgencyEnabled()): ?>
+            <div class="field name">
+                <label class="label" for="urgency"><span>Ticket urgency</span></label>
+                <div class="control">
+                    <select id="urgency" name="ticket_urgency">
+                        <option value="0">Not urgent</option>
+                        <option value="1">Urgent</option>
+                        <option value="2">Very urgent</option>
+                        <option value="3">Critically urgent</option>
+                    </select>
+                </div>
+            </div>
+        <?php endif; ?>
+
+    </fieldset>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" title="Submit ticket" class="action submit primary">
+                <span>Submit Ticket</span>
+            </button>
+        </div>
+    </div>
+
+</form>

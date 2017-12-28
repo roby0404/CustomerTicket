@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Inchoo\CustomerTicket\Api\Data\TicketInterface" type="Inchoo\CustomerTicket\Model\Ticket" />
+    <preference for="Inchoo\CustomerTicket\Api\Data\TicketSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Inchoo\CustomerTicket\Api\TicketRepositoryInterface" type="Inchoo\CustomerTicket\Model\TicketRepository" />
+
+    <preference for="Inchoo\CustomerTicket\Api\Data\ReplyInterface" type="Inchoo\CustomerTicket\Model\Reply" />
+    <preference for="Inchoo\CustomerTicket\Api\Data\ReplySearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Inchoo\CustomerTicket\Api\ReplyRepositoryInterface" type="Inchoo\CustomerTicket\Model\ReplyRepository" />
+
+    <preference for="Inchoo\CustomerTicket\Api\Data\UrgencyIndicatorConfigInterface" type="Inchoo\CustomerTicket\Model\UrgencyIndicatorConfig" />
+
+    <preference for="Inchoo\CustomerTicket\Api\Data\ReopenRequestConfigInterface" type="Inchoo\CustomerTicket\Model\ReopenRequestConfig" />
+
+</config>

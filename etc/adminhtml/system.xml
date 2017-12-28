@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customer_ticket_configuration" translate="label" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Customer Ticket Configuration</label>
+            <tab>customer</tab>
+            <resource>Inchoo_CustomerTicket::customerticketconfiguration</resource>
+            <group id="ticket_configuration" translate="label" type="text" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
+                <label>Ticket configuration</label>
+                <field id="enable_urgency_indicator" translate="label" type="select" sortOrder="10" showInDefault="1" showInStore="1" showInWebsite="1">
+                    <label>Enable Urgency Indicator</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="requests" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Requests</label>
+                <field id="enable_ticket_reopen_requests" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable ticket reopen requests</label>
+                    <source_model>Magento\Config\Model\Config\Source\YesNo</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
