@@ -25,6 +25,11 @@ class SendReply extends \Magento\Backend\App\Action
     protected $replyRepository;
 
     /**
+     * @var \Magento\Backend\App\Action\Context
+     */
+    protected $context;
+
+    /**
      * SendReply constructor.
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Backend\Model\Auth\Session $authSession
@@ -42,6 +47,7 @@ class SendReply extends \Magento\Backend\App\Action
         $this->replyFactory = $replyFactory;
         $this->replyRepository = $replyRepository;
         parent::__construct($context);
+        $this->context = $context;
     }
 
     public function execute()
@@ -54,7 +60,7 @@ class SendReply extends \Magento\Backend\App\Action
         $reply->setAdminId($this->authSession->getUser()->getId());
         $this->replyRepository->save($reply);
 
-        $this->_redirect('ticket/ticket/edit/id/' . $data['ticket_id']);
+        $this->_redirect($this->context->getUrl()->getUrl('ticket/ticket/edit', ['id' => $data['ticket_id']]));
     }
 
 }

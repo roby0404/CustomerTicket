@@ -25,6 +25,11 @@ class Close extends \Magento\Backend\App\Action
     protected $ticketRepository;
 
     /**
+     * @var \Magento\Backend\App\Action\Context
+     */
+    protected $context;
+
+    /**
      * Close constructor.
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
@@ -42,6 +47,7 @@ class Close extends \Magento\Backend\App\Action
         $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
         parent::__construct($context);
+        $this->context = $context;
     }
 
     public function execute()
@@ -51,7 +57,7 @@ class Close extends \Magento\Backend\App\Action
 
         $this->ticketRepository->close($ticket, $id);
 
-        $this->_redirect('ticket/ticket/edit/id/' . $id);
+        $this->_redirect($this->context->getUrl()->getUrl('ticket/ticket/edit', ['id' => $id]));
     }
 
 }

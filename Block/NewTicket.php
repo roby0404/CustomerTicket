@@ -12,6 +12,11 @@ class NewTicket extends \Magento\Framework\View\Element\Template
 {
 
     /**
+     * @var \Inchoo\CustomerTicket\Api\Data\UrgencyIndicatorConfigInterface
+     */
+    protected $urgencyConfig;
+
+    /**
      * NewTicket constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Inchoo\CustomerTicket\Api\Data\UrgencyIndicatorConfigInterface $urgencyConfig
