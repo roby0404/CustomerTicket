@@ -2,6 +2,10 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+
 /**
  * Class Reopen
  * @package Inchoo\CustomerTicket\Controller\Adminhtml\Ticket
@@ -15,19 +19,9 @@ class Reopen extends \Magento\Backend\App\Action
     protected $request;
 
     /**
-     * @var \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory
-     */
-    protected $ticketFactory;
-
-    /**
      * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface
      */
     protected $ticketRepository;
-
-    /**
-     * @var \Magento\Backend\App\Action\Context
-     */
-    protected $context;
 
     /**
      * Reopen constructor.
@@ -44,20 +38,31 @@ class Reopen extends \Magento\Backend\App\Action
     )
     {
         $this->request = $request;
-        $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
         parent::__construct($context);
-        $this->context = $context;
     }
 
+    /**
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
     public function execute()
     {
-        $id = $this->request->getParam('ticket_id');
-        $ticket = $this->ticketFactory->create();
+        $ticketId = $this->request->getParam(TicketInterface::TICKET_ID);
+        try {
+            $ticket = $this->ticketRepository->getById($ticketId);
 
-        $this->ticketRepository->reopen($ticket, $id);
+            try {
+                $this->ticketRepository->reopen($ticket);
+            } catch (CouldNotSaveException $exception) {
+                $this->messageManager->addErrorMessage(__('Ticket could not be reopened'));
+            }
+        } catch (NoSuchEntityException $exception) {
+            $this->messageManager->addErrorMessage(__('Ticket not found'));
+        }
 
-        $this->_redirect($this->context->getUrl()->getUrl('ticket/ticket/edit', ['id' => $id]));
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('*/*/edit', [TicketInterface::TICKET_ID => $ticketId]);
+        return $resultRedirect;
     }
 
 }

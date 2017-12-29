@@ -4,7 +4,7 @@
     <fieldset class="fieldset">
 
         <div class="field name required">
-            <label class="label" for="ticket_reply"><span>Ticket Reply</span></label>
+            <label class="label" for="ticket_reply"><span><?= __('Ticket Reply') ?></span></label>
             <div class="control">
                 <textarea name="reply" style="resize: none;" rows="5" cols="5" id="ticket_reply" data-validate='{"required":true}'></textarea>
             </div>
@@ -15,7 +15,7 @@
     <div class="actions-toolbar">
         <div class="primary">
             <button type="submit" title="Submit Reply" class="action submit primary">
-                <span>Submit Reply</span>
+                <span><?= __('Submit Reply') ?></span>
             </button>
         </div>
     </div>

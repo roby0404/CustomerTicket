@@ -2,6 +2,8 @@
 
 namespace Inchoo\CustomerTicket\Ui\Component\Form\Element;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+
 /**
  * Class Textarea
  * @package Inchoo\CustomerTicket\Ui\Component\Form\Element
@@ -25,7 +27,7 @@ class Textarea extends \Magento\Ui\Component\Form\Element\Textarea
         array $data = []
     )
     {
-        if($ticketRepository->isTicketClosed($request->getParam('id')) || $ticketRepository->isReopenRequested($request->getParam('id'))) {
+        if($ticketRepository->isTicketClosed($request->getParam(TicketInterface::TICKET_ID)) || $ticketRepository->isReopenRequested($request->getParam(TicketInterface::TICKET_ID))) {
             $data = [];
         }
         parent::__construct($context, $components, $data);

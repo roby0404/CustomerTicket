@@ -68,18 +68,12 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function getById($ticketId, $customerId = '')
+    public function getById($ticketId)
     {
         $ticket = $this->ticketFactory->create();
         $this->ticketResource->load($ticket, $ticketId);
-        if(!$ticket->getId()) {
-            return false;
-        }
-        if(!empty($customerId)) {
-            $validate = $ticket->confirmTicketOwnership($customerId);
-            return $validate ? $ticket : false;
-        }
-        return $ticket;
+
+        return !$ticket->getId()? false : $ticket;
     }
 
     /**
@@ -111,9 +105,8 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      * @return TicketInterface
      * @throws CouldNotSaveException
      */
-    public function close(TicketInterface $ticket, $ticketId)
+    public function close(TicketInterface $ticket)
     {
-        $this->ticketResource->load($ticket, $ticketId);
         $ticket->setTicketStatus('closed');
         try {
             $this->ticketResource->save($ticket);
@@ -129,9 +122,8 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      * @return TicketInterface
      * @throws CouldNotSaveException
      */
-    public function requestReopen(TicketInterface $ticket, $ticketId)
+    public function requestReopen(TicketInterface $ticket)
     {
-        $this->ticketResource->load($ticket, $ticketId);
         $ticket->setTicketStatus('reopen requested');
         try {
             $this->ticketResource->save($ticket);
@@ -190,11 +182,9 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      * @return TicketInterface
      * @throws CouldNotSaveException
      */
-    public function reopen(TicketInterface $ticket, $ticketId)
+    public function reopen(TicketInterface $ticket)
     {
-        $this->ticketResource->load($ticket, $ticketId);
         $ticket->setTicketStatus('open');
-
         try {
             $this->ticketResource->save($ticket);
         } catch(\Exception $exception) {

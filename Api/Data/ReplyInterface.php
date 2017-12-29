@@ -13,7 +13,7 @@ interface ReplyInterface
 
     const TICKET_ID= 'ticket_id';
 
-    const SUBMIT_URL = 'ticket/newreply/savereply';
+    const SUBMIT_URL = 'ticket/ticket/sendreply';
 
     const TICKET_URL = 'ticket/ticket/index';
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Inchoo\CustomerTicket\Controller\MyTickets;
+namespace Inchoo\CustomerTicket\Controller\Ticket;
 
 /**
- * Class Index
- * @package Inchoo\CustomerTicket\Controller\MyTickets
+ * Class TicketList
+ * @package Inchoo\CustomerTicket\Controller\Ticket
  */
-class Index extends \Magento\Framework\App\Action\Action
+class TicketList extends AbstractTicket
 {
 
     /**
@@ -15,25 +15,21 @@ class Index extends \Magento\Framework\App\Action\Action
     protected $resultPageFactory;
 
     /**
-     * @var \Magento\Customer\Model\Session
-     */
-    protected $customerSession;
-
-    /**
-     * Index constructor.
+     * TicketList constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Customer\Model\Session $customerSession
+     * @param \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Customer\Model\Session $customerSession
+        \Magento\Customer\Model\Session $customerSession,
+        \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
     )
     {
         $this->resultPageFactory = $resultPageFactory;
-        $this->customerSession = $customerSession;
-        parent::__construct($context);
+        parent::__construct($context, $ticketRepository, $customerSession);
     }
 
     /**
@@ -41,9 +37,6 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        if(!$this->customerSession->isLoggedIn()) {
-            $this->_redirect('/');
-        }
         $resultPage = $this->resultPageFactory->create();
         return $resultPage;
     }

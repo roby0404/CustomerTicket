@@ -2,6 +2,8 @@
 
 namespace Inchoo\CustomerTicket\Block\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+
 /**
  * Class Reopen
  * @package Inchoo\CustomerTicket\Block\Adminhtml\Ticket
@@ -48,10 +50,14 @@ class Reopen implements \Magento\Framework\View\Element\UiComponent\Control\Butt
     {
         $data = [];
 
-        if($this->ticketRepository->isReopenRequested($this->request->getParam('id'))) {
+        if($this->ticketRepository->isReopenRequested($this->request->getParam(TicketInterface::TICKET_ID))) {
             return [
               'label' => __('Reopen ticket'),
-              'on_click' => sprintf("location.href = '%s'", $this->context->getUrl('ticket/ticket/reopen', ['ticket_id' => $this->request->getParam('id')]))
+              'on_click' => sprintf("location.href = '%s'",
+                                $this->context->getUrl(
+                                    'ticket/ticket/reopen',
+                                    [TicketInterface::TICKET_ID => $this->request->getParam(TicketInterface::TICKET_ID)]
+                                ))
             ];
         }
 

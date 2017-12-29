@@ -3,13 +3,14 @@
 namespace Inchoo\CustomerTicket\Controller\Ticket;
 
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class Index
+ * Class RequestReopen
  * @package Inchoo\CustomerTicket\Controller\Ticket
  */
-class Index extends AbstractTicket
+class RequestReopen extends AbstractTicket
 {
 
     /**
@@ -18,54 +19,51 @@ class Index extends AbstractTicket
     protected $request;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface
      */
-    protected $registry;
+    protected $ticketRepository;
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * Index constructor.
+     * RequestReopen constructor.
      * @param \Magento\Framework\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Framework\Registry $registry
-     * @param \Inchoo\CustomerTicket\Model\TicketRepository $ticketRepository
+     * @param \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Framework\Registry $registry,
-        \Inchoo\CustomerTicket\Model\TicketRepository $ticketRepository
+        \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
     )
     {
         $this->request = $request;
-        $this->registry = $registry;
-        $this->resultPageFactory = $resultPageFactory;
+        $this->ticketRepository = $ticketRepository;
         parent::__construct($context, $ticketRepository, $customerSession);
     }
 
     /**
-     * @return \Magento\Framework\View\Result\Page
+     * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute()
     {
         try {
             $ticketId = $this->request->getParam(TicketInterface::TICKET_ID);
             $ticket = $this->_getTicket($ticketId);
-            $this->registry->register('ticket', $ticket);
 
-            $resultPage = $this->resultPageFactory->create();
-            return $resultPage;
+            try {
+                $this->ticketRepository->requestReopen($ticket);
+            } catch (CouldNotSaveException $exception) {
+                $this->messageManager->addErrorMessage('Ticket reopen request is not sent');
+            }
+
         } catch (NoSuchEntityException $exception) {
-            return $this->_redirectWithError();
+           return $this->_redirectWithError();
         }
+
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath(TicketInterface::TICKET_URL, [TicketInterface::TICKET_ID => $ticketId]);
+        return $resultRedirect;
     }
 
 }

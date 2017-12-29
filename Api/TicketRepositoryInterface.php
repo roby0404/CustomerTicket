@@ -15,7 +15,7 @@ interface TicketRepositoryInterface
      * @param $ticketId
      * @return mixed
      */
-    public function getById($ticketId, $customerId = '');
+    public function getById($ticketId);
 
     /**
      * @param Data\TicketInterface $
@@ -33,14 +33,14 @@ interface TicketRepositoryInterface
      * @param $ticketId
      * @return mixed
      */
-    public function close(Data\TicketInterface $ticket, $ticketId);
+    public function close(Data\TicketInterface $ticket);
 
     /**
      * @param Data\TicketInterface $ticket
      * @param $ticketId
      * @return mixed
      */
-    public function requestReopen(Data\TicketInterface $ticket, $ticketId);
+    public function requestReopen(Data\TicketInterface $ticket);
 
     /**
      * @param $customerId
@@ -64,7 +64,7 @@ interface TicketRepositoryInterface
      * @param $ticketId
      * @return mixed
      */
-    public function reopen(Data\TicketInterface $ticket, $ticketId);
+    public function reopen(Data\TicketInterface $ticket);
 
     /**
      * @param SearchCriteriaInterface $searchCriteria

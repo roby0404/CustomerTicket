@@ -2,6 +2,9 @@
 
 namespace Inchoo\CustomerTicket\Block;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+use Inchoo\CustomerTicket\Api\TicketRepositoryInterface;
+
 /**
  * Class MyTicket
  * @package Inchoo\CustomerTicket\Block
@@ -15,9 +18,9 @@ class MyTicket extends \Magento\Framework\View\Element\Template
     protected $request;
 
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var Registry|\Magento\Framework\Registry
      */
-    protected $customerSession;
+    protected $registry;
 
     /**
      * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface
@@ -33,20 +36,20 @@ class MyTicket extends \Magento\Framework\View\Element\Template
      * MyTicket constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\App\Request\Http $request
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
+     * @param \Magento\Framework\Registry $registry
+     * @param TicketRepositoryInterface $ticketRepository
      * @param \Inchoo\CustomerTicket\Api\Data\ReopenRequestConfigInterface $reopenRequestConfig
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\App\Request\Http $request,
-        \Magento\Customer\Model\Session $customerSession,
+        \Magento\Framework\Registry $registry,
         \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository,
         \Inchoo\CustomerTicket\Api\Data\ReopenRequestConfigInterface $reopenRequestConfig
     )
     {
         $this->request = $request;
-        $this->customerSession = $customerSession;
+        $this->registry = $registry;
         $this->ticketRepository = $ticketRepository;
         $this->reopenReuqestConfig = $reopenRequestConfig;
         parent::__construct($context);
@@ -57,7 +60,7 @@ class MyTicket extends \Magento\Framework\View\Element\Template
      */
     public function getTicket()
     {
-        $ticket = $this->ticketRepository->getById($this->request->getParam('id'), $this->customerSession->getCustomer()->getId());
+        $ticket = $this->registry->registry('ticket');
         if($ticket)
             return $ticket;
     }
@@ -67,9 +70,10 @@ class MyTicket extends \Magento\Framework\View\Element\Template
      */
     public function getTitle()
     {
-        if($this->getTicket())
-            return "Ticket #" . $this->request->getParam('id') . "|Created at " . $this->formatDate($this->getTicket()->getCreatedAt(), 3, true) . "|Status: "
-                . ucfirst($this->getTicket()->getTicketStatus());
+        if(!is_null($this->getTicket()))
+            return "Ticket #" . $this->request->getParam(TicketInterface::TICKET_ID)
+                . "|Created at " . $this->formatDate($this->getTicket()->getCreatedAt(), 3, true)
+                . "|Status: " . ucfirst($this->getTicket()->getTicketStatus());
     }
 
     /**
@@ -77,7 +81,7 @@ class MyTicket extends \Magento\Framework\View\Element\Template
      */
     public function isClosed()
     {
-        return $this->ticketRepository->isTicketClosed($this->request->getParam('id'));
+        return $this->ticketRepository->isTicketClosed($this->request->getParam(TicketInterface::TICKET_ID));
     }
 
     /**
@@ -85,7 +89,15 @@ class MyTicket extends \Magento\Framework\View\Element\Template
      */
     public function getTicketCloseUrl()
     {
-        return $this->getUrl('*/*/close', ['ticket_id' => $this->request->getParam('id')]);
+        return $this->getUrl(TicketInterface::CLOSE_URL, [TicketInterface::TICKET_ID => $this->request->getParam(TicketInterface::TICKET_ID)]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getReopenRequestUrl()
+    {
+        return $this->getUrl(TicketInterface::REQUEST_REOPEN_URL, [TicketInterface::TICKET_ID => $this->request->getParam(TicketInterface::TICKET_ID)]);
     }
 
     /**
@@ -101,15 +113,7 @@ class MyTicket extends \Magento\Framework\View\Element\Template
      */
     public function isReopenRequested()
     {
-        return $this->ticketRepository->isReopenRequested($this->request->getParam('id'));
-    }
-
-    /**
-     * @return string
-     */
-    public function getReopenRequestUrl()
-    {
-        return $this->getUrl('*/*/reopenrequest', ['ticket_id' => $this->request->getParam('id')]);
+        return $this->ticketRepository->isReopenRequested($this->request->getParam(TicketInterface::TICKET_ID));
     }
 
 }

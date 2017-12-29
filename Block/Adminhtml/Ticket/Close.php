@@ -2,6 +2,8 @@
 
 namespace Inchoo\CustomerTicket\Block\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+
 /**
  * Class Close
  * @package Inchoo\CustomerTicket\Block\Adminhtml\Ticket
@@ -48,10 +50,15 @@ class Close implements \Magento\Framework\View\Element\UiComponent\Control\Butto
     {
         $data = [];
 
-        if(!$this->ticketRepository->isTicketClosed($this->request->getParam('id')) && !$this->ticketRepository->isReopenRequested($this->request->getParam('id'))) {
+        if(!$this->ticketRepository->isTicketClosed($this->request->getParam(TicketInterface::TICKET_ID))
+            && !$this->ticketRepository->isReopenRequested($this->request->getParam(TicketInterface::TICKET_ID))) {
             return [
                 'label' => __('Close ticket'),
-                'on_click' => sprintf("location.href = '%s'", $this->context->getUrl('ticket/ticket/close', ['ticket_id' => $this->request->getParam('id')]))
+                'on_click' => sprintf("location.href = '%s'",
+                                $this->context->getUrl(
+                                    'ticket/ticket/close',
+                                    [TicketInterface::TICKET_ID => $this->request->getParam(TicketInterface::TICKET_ID)]
+                                ))
             ];
         }
 

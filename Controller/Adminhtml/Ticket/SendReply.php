@@ -2,6 +2,9 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Api\Data\ReplyInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+
 /**
  * Class SendReply
  * @package Inchoo\CustomerTicket\Controller\Adminhtml\Ticket
@@ -25,11 +28,6 @@ class SendReply extends \Magento\Backend\App\Action
     protected $replyRepository;
 
     /**
-     * @var \Magento\Backend\App\Action\Context
-     */
-    protected $context;
-
-    /**
      * SendReply constructor.
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Backend\Model\Auth\Session $authSession
@@ -47,9 +45,11 @@ class SendReply extends \Magento\Backend\App\Action
         $this->replyFactory = $replyFactory;
         $this->replyRepository = $replyRepository;
         parent::__construct($context);
-        $this->context = $context;
     }
 
+    /**
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
@@ -58,9 +58,16 @@ class SendReply extends \Magento\Backend\App\Action
         $reply->setTicketId($data['ticket_id']);
         $reply->setReplyMessage($data['reply_message']);
         $reply->setAdminId($this->authSession->getUser()->getId());
-        $this->replyRepository->save($reply);
 
-        $this->_redirect($this->context->getUrl()->getUrl('ticket/ticket/edit', ['id' => $data['ticket_id']]));
+        try {
+            $this->replyRepository->save($reply);
+        } catch (CouldNotSaveException $exception) {
+            $this->messageManager->addErrorMessage(__('Reply not sent'));
+        }
+
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('*/*/edit', [ReplyInterface::TICKET_ID => $data['ticket_id']]);
+        return $resultRedirect;
     }
 
 }

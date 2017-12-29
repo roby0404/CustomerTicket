@@ -2,6 +2,10 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+
 /**
  * Class Close
  * @package Inchoo\CustomerTicket\Controller\Adminhtml\Ticket
@@ -15,49 +19,49 @@ class Close extends \Magento\Backend\App\Action
     protected $request;
 
     /**
-     * @var \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory
-     */
-    protected $ticketFactory;
-
-    /**
      * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface
      */
     protected $ticketRepository;
 
     /**
-     * @var \Magento\Backend\App\Action\Context
-     */
-    protected $context;
-
-    /**
      * Close constructor.
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
-     * @param \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory $ticketFactory
      * @param \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\App\Request\Http $request,
-        \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory $ticketFactory,
         \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
     )
     {
         $this->request = $request;
-        $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
         parent::__construct($context);
-        $this->context = $context;
     }
 
+    /**
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
     public function execute()
     {
-        $id = $this->request->getParam('ticket_id');
-        $ticket = $this->ticketFactory->create();
+        $ticketId = $this->request->getParam(TicketInterface::TICKET_ID);
+        try {
+            $ticket = $this->ticketRepository->getById($ticketId);
 
-        $this->ticketRepository->close($ticket, $id);
+            try {
+                $this->ticketRepository->close($ticket);
+            } catch(CouldNotSaveException $exception) {
+                $this->messageManager->addErrorMessage(__('Ticket could not be closed'));
+            }
 
-        $this->_redirect($this->context->getUrl()->getUrl('ticket/ticket/edit', ['id' => $id]));
+        } catch (NoSuchEntityException $exception) {
+            $this->messageManager->addErrorMessage(__('Ticket not found'));
+        }
+
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('*/*/edit', [TicketInterface::TICKET_ID => $ticketId]);
+        return $resultRedirect;
     }
 
 }

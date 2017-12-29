@@ -68,7 +68,7 @@ class TicketReplies extends \Magento\Framework\View\Element\Template
      */
     public function getTicketId()
     {
-        return $this->request->getParam('id');
+        return $this->request->getParam(ReplyInterface::TICKET_ID);
     }
 
     /**
@@ -76,7 +76,7 @@ class TicketReplies extends \Magento\Framework\View\Element\Template
      */
     public function getSubmitUrl()
     {
-        return $this->getUrl(ReplyInterface::SUBMIT_URL, ['ticket_id' => $this->getTicketId()]);
+        return $this->getUrl(ReplyInterface::SUBMIT_URL, [ReplyInterface::TICKET_ID => $this->getTicketId()]);
     }
 
     /**
@@ -100,7 +100,7 @@ class TicketReplies extends \Magento\Framework\View\Element\Template
      */
     public function isReopenRequested()
     {
-        return $this->ticketRepository->isReopenRequested($this->request->getParam('id'));
+        return $this->ticketRepository->isReopenRequested($this->request->getParam(ReplyInterface::TICKET_ID));
     }
 
 

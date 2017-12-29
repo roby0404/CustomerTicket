@@ -25,13 +25,21 @@ interface TicketInterface
 
     const UPDATED_AT = 'updated_at';
 
-    const FORM_URL = 'ticket/newticket';
 
-    const SUBMIT_URL = 'ticket/newticket/saveticket';
+
+    const FORM_URL = 'ticket/ticket/ticketform';
+
+    const SUBMIT_URL = 'ticket/ticket/saveticket';
 
     const TICKET_URL = 'ticket/ticket/index';
 
-    const CUSTOMER_TICKETS_VIEW = 'ticket/mytickets/';
+    const CUSTOMER_TICKETS_VIEW = 'ticket/ticket/ticketlist';
+
+    const CLOSE_URL = 'ticket/ticket/close';
+
+    const REQUEST_REOPEN_URL = 'ticket/ticket/requestreopen';
+
+
 
     const TICKET_URGENCY_LEVELS = [
         0 => 'Not urgent',
@@ -45,11 +53,5 @@ interface TicketInterface
         '1' => 'reopen requested',
         '2' => 'closed'
     ];
-
-    /**
-     * @param $customerId
-     * @return mixed
-     */
-    public function confirmTicketOwnership($customerId);
 
 }

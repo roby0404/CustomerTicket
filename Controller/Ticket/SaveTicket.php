@@ -1,14 +1,15 @@
 <?php
 
-namespace Inchoo\CustomerTicket\Controller\NewTicket;
+namespace Inchoo\CustomerTicket\Controller\Ticket;
 
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
 
 /**
  * Class SaveTicket
  * @package Inchoo\CustomerTicket\Controller\NewTicket
  */
-class SaveTicket extends \Magento\Framework\App\Action\Action
+class SaveTicket extends AbstractTicket
 {
 
     /**
@@ -51,6 +52,7 @@ class SaveTicket extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\Request\DataPersistorInterface $persistor
+     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory $ticketFactory
@@ -75,35 +77,37 @@ class SaveTicket extends \Magento\Framework\App\Action\Action
         $this->ticketFactory = $ticketFactory;
         $this->ticketRepository = $ticketRepository;
         $this->urgencyIndicatorConfig = $urgencyIndicatorConfig;
-        parent::__construct($context);
+        parent::__construct($context, $ticketRepository, $customerSession);
     }
 
     /**
-     *
+     * @return \Magento\Framework\Controller\Result\Redirect
      */
     public function execute()
     {
-        if(!$this->customerSession->isLoggedIn()) {
-            $this->_redirect('/');
-        }
-        $data = $this->request->getPostValue();
-        $ticket = $this->ticketFactory->create();
+            $data = $this->request->getPostValue();
+            $ticket = $this->ticketFactory->create();
 
-        $ticket->setCustomerId($this->customerSession->getCustomer()->getId());
-        $ticket->setWebsiteId($this->storeManager->getStore()->getWebsiteId());
-        $ticket->setTicketSubject($data['subject']);
-        $ticket->setTicketMessage($data['message']);
-        $ticket->setTicketStatus('open');
+            $ticket->setCustomerId($this->customerSession->getCustomerId());
+            $ticket->setWebsiteId($this->storeManager->getStore()->getWebsiteId());
+            $ticket->setTicketSubject($data['subject']);
+            $ticket->setTicketMessage($data['message']);
+            $ticket->setTicketStatus('open');
 
-        if($this->urgencyIndicatorConfig->isEnabled()) {
-            $ticket->setTicketUrgency($data['ticket_urgency']);
-        }
+            if($this->urgencyIndicatorConfig->isEnabled()) {
+                $ticket->setTicketUrgency($data['ticket_urgency']);
+            }
 
-        $this->ticketRepository->save($ticket);
+            try {
+                $this->ticketRepository->save($ticket);
+                $this->persistor->set('ticket_id', $ticket->getId());
+            } catch(CouldNotSaveException $exception) {
+                $this->messageManager->addErrorMessage(__('Ticket is not saved'));
+            }
 
-        $this->persistor->set('ticket_id', $ticket->getId());
-
-        $this->_redirect(TicketInterface::CUSTOMER_TICKETS_VIEW);
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath(TicketInterface::CUSTOMER_TICKETS_VIEW);
+        return $resultRedirect;
     }
 
 }

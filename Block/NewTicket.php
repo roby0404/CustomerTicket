@@ -24,12 +24,11 @@ class NewTicket extends \Magento\Framework\View\Element\Template
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Inchoo\CustomerTicket\Api\Data\UrgencyIndicatorConfigInterface $urgencyConfig,
-        array $data = []
+        \Inchoo\CustomerTicket\Api\Data\UrgencyIndicatorConfigInterface $urgencyConfig
     )
     {
         $this->urgencyConfig = $urgencyConfig;
-        parent::__construct($context, $data);
+        parent::__construct($context);
     }
 
     /**
@@ -45,7 +44,7 @@ class NewTicket extends \Magento\Framework\View\Element\Template
      */
     public function getTitle()
     {
-        return "New Ticket";
+        return __("New Ticket");
     }
 
     /**

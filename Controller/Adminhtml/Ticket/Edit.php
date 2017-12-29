@@ -2,6 +2,7 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 use Magento\Framework\Controller\ResultFactory;
 
 /**
@@ -34,7 +35,7 @@ class Edit extends \Magento\Cms\Controller\Adminhtml\Block
         $resultPage = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
 
         $resultPage->setActiveMenu('Inchoo_CustomerTicket::tickets');
-        $resultPage->getConfig()->getTitle()->prepend(__('Ticket') . " #" . $this->request->getParam('id'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Ticket') . " #" . $this->request->getParam(TicketInterface::TICKET_ID));
 
         return $resultPage;
     }

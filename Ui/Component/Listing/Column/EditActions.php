@@ -25,7 +25,7 @@ class EditActions extends \Magento\Ui\Component\Listing\Columns\Column
                     'view' => [
                         'href' => $this->context->getUrl(
                             'ticket/ticket/edit',
-                            ['id' => $item['ticket_id']]
+                            ['ticket_id' => $item['ticket_id']]
                         ),
                         'label' => __('View')
                     ]

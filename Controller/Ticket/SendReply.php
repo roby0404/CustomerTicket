@@ -1,11 +1,13 @@
 <?php
 
-namespace Inchoo\CustomerTicket\Controller\NewReply;
+namespace Inchoo\CustomerTicket\Controller\Ticket;
 
 use Inchoo\CustomerTicket\Api\Data\ReplyInterface;
 use Inchoo\CustomerTicket\Api\ReplyRepositoryInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
-class SaveReply extends \Magento\Framework\App\Action\Action
+class SendReply extends AbstractTicket
 {
 
     /**
@@ -14,19 +16,9 @@ class SaveReply extends \Magento\Framework\App\Action\Action
     protected $request;
 
     /**
-     * @var \Magento\Customer\Model\Session
-     */
-    protected $customerSession;
-
-    /**
      * @var \Inchoo\CustomerTicket\Api\Data\ReplyInterfaceFactory
      */
     protected $replyFactory;
-
-    /**
-     * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface
-     */
-    protected $ticketRepository;
 
     /**
      * @var \Inchoo\CustomerTicket\Api\ReplyRepositoryInterface
@@ -34,12 +26,7 @@ class SaveReply extends \Magento\Framework\App\Action\Action
     protected $replyRepository;
 
     /**
-     * @var \Magento\Framework\App\Action\Context
-     */
-    protected $context;
-
-    /**
-     * SaveReply constructor.
+     * SendReply constructor.
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Customer\Model\Session $customerSession
@@ -57,28 +44,39 @@ class SaveReply extends \Magento\Framework\App\Action\Action
     )
     {
         $this->request = $request;
-        $this->customerSession = $customerSession;
         $this->replyFactory = $replyFactory;
-        $this->ticketRepository = $ticketRepository;
         $this->replyRepository = $replyRepository;
-        parent::__construct($context);
-        $this->context = $context;
+        parent::__construct($context, $ticketRepository, $customerSession);
     }
 
+    /**
+     * @return \Magento\Framework\Controller\Result\Redirect
+     */
     public function execute()
     {
-        if(!$this->customerSession->isLoggedIn() || !$this->ticketRepository->getById($this->request->getParam(ReplyInterface::TICKET_ID), $this->customerSession->getCustomer()->getId())) {
-            $this->_redirect('/');
+        try {
+            $ticketId = $this->request->getParam(ReplyInterface::TICKET_ID);
+            $this->_getTicket($ticketId);
+
+            $data = $this->request->getPostValue();
+            $reply = $this->replyFactory->create();
+
+            $reply->setTicketId($this->request->getParam(ReplyInterface::TICKET_ID));
+            $reply->setReplyMessage($data['reply']);
+
+            try {
+                $this->replyRepository->save($reply);
+            } catch(CouldNotSaveException $exception) {
+                $this->messageManager->addErrorMessage(__('Reply is not sent'));
+            }
+
+        } catch (NoSuchEntityException $exception) {
+            return $this->_redirectWithError();
         }
-        $data = $this->request->getPostValue();
-        $reply = $this->replyFactory->create();
 
-        $reply->setTicketId($this->request->getParam(ReplyInterface::TICKET_ID));
-        $reply->setReplyMessage($data['reply']);
-
-        $this->replyRepository->save($reply);
-
-        $this->_redirect($this->context->getUrl()->getUrl(ReplyInterface::TICKET_URL, ['id' => $this->request->getParam(ReplyInterface::TICKET_ID)]));
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath(ReplyInterface::TICKET_URL, [ReplyInterface::TICKET_ID => $ticketId]);
+        return $resultRedirect;
     }
 
 }
