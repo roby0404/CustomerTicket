@@ -85,7 +85,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
     {
         try {
             $this->ticketResource->save($ticket);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $ticket;
@@ -110,7 +110,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
         $ticket->setTicketStatus('closed');
         try {
             $this->ticketResource->save($ticket);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $ticket;
@@ -127,7 +127,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
         $ticket->setTicketStatus('reopen requested');
         try {
             $this->ticketResource->save($ticket);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $ticket;
@@ -187,7 +187,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
         $ticket->setTicketStatus('open');
         try {
             $this->ticketResource->save($ticket);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $ticket;

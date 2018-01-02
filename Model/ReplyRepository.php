@@ -66,7 +66,7 @@ class ReplyRepository implements \Inchoo\CustomerTicket\Api\ReplyRepositoryInter
     {
         try {
             $this->replyResource->save($reply);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $reply;

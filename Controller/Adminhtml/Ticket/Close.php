@@ -51,7 +51,7 @@ class Close extends \Magento\Backend\App\Action
 
             try {
                 $this->ticketRepository->close($ticket);
-            } catch(CouldNotSaveException $exception) {
+            } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket could not be closed'));
             }
 
