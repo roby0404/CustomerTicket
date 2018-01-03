@@ -55,6 +55,7 @@ class TicketDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
         $customer = $this->customerRepository->getById($ticket['customer_id']);
 
+        $ticket['ticket_status'] = ucfirst($ticket['ticket_status']);
         $ticket['customer_name'] = $customer->getFirstname();
         $ticket['customer_email'] = $customer->getEmail();
         $ticket['reply_message'] = '';

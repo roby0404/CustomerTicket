@@ -102,6 +102,14 @@
             </settings>
         </field>
 
+        <field name="ticket_status" formElement="input" sortOrder="60">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Ticket Status</label>
+                <dataScope>ticket_status</dataScope>
+            </settings>
+        </field>
+
     </fieldset>
 
     <htmlContent name="replies">
