@@ -53,6 +53,7 @@ class Close extends AbstractTicket
 
             try {
                 $this->ticketRepository->close($ticket);
+                $this->messageManager->addSuccessMessage(__('Ticket closed successfully'));
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket is not closed'));
             }

@@ -100,6 +100,7 @@ class SaveTicket extends AbstractTicket
 
             try {
                 $this->ticketRepository->save($ticket);
+                $this->messageManager->addSuccessMessage(__('Ticket submitted successfully'));
                 $this->persistor->set('ticket_id', $ticket->getId());
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket is not saved'));

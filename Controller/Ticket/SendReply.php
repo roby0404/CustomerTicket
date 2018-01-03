@@ -66,6 +66,7 @@ class SendReply extends AbstractTicket
 
             try {
                 $this->replyRepository->save($reply);
+                $this->messageManager->addSuccessMessage(__('Reply sent successfully'));
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Reply is not sent'));
             }

@@ -53,6 +53,7 @@ class RequestReopen extends AbstractTicket
 
             try {
                 $this->ticketRepository->requestReopen($ticket);
+                $this->messageManager->addSuccessMessage(__('Ticket reopen request successfully sent'));
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket reopen request is not sent'));
             }
