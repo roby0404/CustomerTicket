@@ -61,6 +61,7 @@ class SendReply extends \Magento\Backend\App\Action
 
         try {
             $this->replyRepository->save($reply);
+            $this->messageManager->addSuccessMessage(__('Replied successfully'));
         } catch (CouldNotSaveException $exception) {
             $this->messageManager->addErrorMessage(__('Reply not sent'));
         }

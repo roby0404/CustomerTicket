@@ -2,6 +2,7 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Controller\Adminhtml\Ticket\AbstractTicket;
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -10,7 +11,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  * Class Close
  * @package Inchoo\CustomerTicket\Controller\Adminhtml\Ticket
  */
-class Close extends \Magento\Backend\App\Action
+class Close extends AbstractTicket
 {
 
     /**
@@ -37,7 +38,7 @@ class Close extends \Magento\Backend\App\Action
     {
         $this->request = $request;
         $this->ticketRepository = $ticketRepository;
-        parent::__construct($context);
+        parent::__construct($context, $ticketRepository);
     }
 
     /**
@@ -47,16 +48,17 @@ class Close extends \Magento\Backend\App\Action
     {
         $ticketId = $this->request->getParam(TicketInterface::TICKET_ID);
         try {
-            $ticket = $this->ticketRepository->getById($ticketId);
+            $ticket = $this->_getTicket($ticketId);
 
             try {
                 $this->ticketRepository->close($ticket);
+                $this->messageManager->addSuccessMessage(__('Ticket closed successfully'));
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket could not be closed'));
             }
 
         } catch (NoSuchEntityException $exception) {
-            $this->messageManager->addErrorMessage(__('Ticket not found'));
+            return $this->_redirectWithError();
         }
 
         $resultRedirect = $this->resultRedirectFactory->create();

@@ -64,9 +64,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
 
     /**
      * @param $ticketId
-     * @param string $customerId
-     * @return bool
-     * @throws NoSuchEntityException
+     * @return bool|TicketInterface
      */
     public function getById($ticketId)
     {

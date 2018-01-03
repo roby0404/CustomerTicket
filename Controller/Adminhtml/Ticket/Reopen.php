@@ -2,6 +2,7 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
+use Inchoo\CustomerTicket\Controller\Adminhtml\Ticket\AbstractTicket;
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -10,7 +11,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  * Class Reopen
  * @package Inchoo\CustomerTicket\Controller\Adminhtml\Ticket
  */
-class Reopen extends \Magento\Backend\App\Action
+class Reopen extends AbstractTicket
 {
 
     /**
@@ -39,7 +40,7 @@ class Reopen extends \Magento\Backend\App\Action
     {
         $this->request = $request;
         $this->ticketRepository = $ticketRepository;
-        parent::__construct($context);
+        parent::__construct($context, $ticketRepository);
     }
 
     /**
@@ -49,15 +50,16 @@ class Reopen extends \Magento\Backend\App\Action
     {
         $ticketId = $this->request->getParam(TicketInterface::TICKET_ID);
         try {
-            $ticket = $this->ticketRepository->getById($ticketId);
+            $ticket = $this->_getTicket($ticketId);
 
             try {
                 $this->ticketRepository->reopen($ticket);
+                $this->messageManager->addSuccessMessage(__('Ticket reopened successfully'));
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket could not be reopened'));
             }
         } catch (NoSuchEntityException $exception) {
-            $this->messageManager->addErrorMessage(__('Ticket not found'));
+            return $this->_redirectWithError();
         }
 
         $resultRedirect = $this->resultRedirectFactory->create();
