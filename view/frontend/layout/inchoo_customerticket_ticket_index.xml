@@ -7,12 +7,12 @@
     </head>
     <body>
         <referenceContainer name="columns.top">
-            <block class="Inchoo\CustomerTicket\Block\MyTicket" name="page.main.title" template="Inchoo_CustomerTicket::title.phtml" />
+            <block class="Inchoo\CustomerTicket\Block\MyTicket" name="page.main.title" template="Inchoo_CustomerTicket::title.phtml" cacheable="false" />
         </referenceContainer>
         <referenceContainer name="content">
-            <block class="Inchoo\CustomerTicket\Block\MyTicket" name="my_ticket" template="Inchoo_CustomerTicket::ticket.phtml" />
-            <block class="Inchoo\CustomerTicket\Block\TicketReplies" name="ticket_replies" template="Inchoo_CustomerTicket::ticket_replies.phtml" />
-            <block class="Inchoo\CustomerTicket\Block\TicketReplies" name="new_reply" template="Inchoo_CustomerTicket::new_reply.phtml" />
+            <block class="Inchoo\CustomerTicket\Block\MyTicket" name="my_ticket" template="Inchoo_CustomerTicket::ticket.phtml" cacheable="false" />
+            <block class="Inchoo\CustomerTicket\Block\TicketReplies" name="ticket_replies" template="Inchoo_CustomerTicket::ticket_replies.phtml" cacheable="false" />
+            <block class="Inchoo\CustomerTicket\Block\TicketReplies" name="new_reply" template="Inchoo_CustomerTicket::new_reply.phtml" cacheable="false" />
         </referenceContainer>
     </body>
 </page>

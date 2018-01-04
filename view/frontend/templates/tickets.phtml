@@ -8,11 +8,14 @@
 <table>
 
     <thead>
-        <th><?= __('Subject') ?></th>
-        <th><?= __('Status') ?></th>
-        <th><?= __('Created at') ?></th>
+        <tr>
+            <th><?= __('Subject') ?></th>
+            <th><?= __('Status') ?></th>
+            <th><?= __('Created at') ?></th>
+        </tr>
     </thead>
 
+    <tbody>
     <?php foreach($block->ticketList() as $ticket): ?>
 
             <tr>

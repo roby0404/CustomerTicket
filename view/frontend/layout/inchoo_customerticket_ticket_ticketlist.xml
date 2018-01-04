@@ -7,10 +7,10 @@
     </head>
     <body>
         <referenceContainer name="columns.top">
-            <block class="Inchoo\CustomerTicket\Block\MyTickets" name="page.main.title" template="Inchoo_CustomerTicket::title.phtml" />
+            <block class="Inchoo\CustomerTicket\Block\MyTickets" name="page.main.title" template="Inchoo_CustomerTicket::title.phtml" cacheable="false" />
         </referenceContainer>
         <referenceContainer name="content">
-            <block class="Inchoo\CustomerTicket\Block\MyTickets" name="my_tickets" template="Inchoo_CustomerTicket::tickets.phtml" />
+            <block class="Inchoo\CustomerTicket\Block\MyTickets" name="my_tickets" template="Inchoo_CustomerTicket::tickets.phtml" cacheable="false" />
         </referenceContainer>
     </body>
 </page>
