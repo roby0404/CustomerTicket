@@ -3,6 +3,7 @@
 namespace Inchoo\CustomerTicket\Ui\Component;
 
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+use Inchoo\CustomerTicket\Model\Ticket;
 
 /**
  * Class TicketsDataProvider
@@ -59,22 +60,13 @@ class TicketsDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public function getData()
     {
-        $data = $this->getCollection()->setOrder('ticket_urgency')->setOrder('created_at')->toArray();
-
-        $statusArray = array_flip(TicketInterface::TICKET_STATUS_ARRAY);
-
-        usort($data['items'], function($a, $b) use (&$statusArray) {
-            if($statusArray[$a['ticket_status']] == $statusArray[$b['ticket_status']]) {
-                return 0;
-            }
-            return ($statusArray[$a['ticket_status']] < $statusArray[$b['ticket_status']]) ? -1 : 1;
-        });
+        $data = $this->getCollection()->setOrder('ticket_status', 'ASC')->setOrder('ticket_urgency')->toArray();
 
         foreach($data['items'] as $index => $item) {
             $data['items'][$index]['customer_name'] = $this->customerRepository->getById($item['customer_id'])->getFirstname();
             $data['items'][$index]['customer_email'] = $this->customerRepository->getById($item['customer_id'])->getEmail();
             $data['items'][$index]['ticket_urgency_indicator'] = TicketInterface::TICKET_URGENCY_LEVELS[$this->ticketRepository->getById($item['ticket_id'], $item['customer_id'])->getTicketUrgency()];
-            $data['items'][$index]['ticket_status_state'] = ucfirst($item['ticket_status']);
+            $data['items'][$index]['ticket_status_state'] = TicketInterface::TICKET_STATUS_ARRAY[$this->ticketRepository->getById($item['ticket_id'], $item['customer_id'])->getTicketStatus()];
         }
 
         return $data;

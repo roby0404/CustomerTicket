@@ -73,7 +73,7 @@ class MyTicket extends \Magento\Framework\View\Element\Template
         if(!is_null($this->getTicket()))
             return "Ticket #" . $this->request->getParam(TicketInterface::TICKET_ID)
                 . "|Created at " . $this->formatDate($this->getTicket()->getCreatedAt(), 3, true)
-                . "|Status: " . ucfirst($this->getTicket()->getTicketStatus());
+                . "|Status: " . ucfirst(TicketInterface::TICKET_STATUS_ARRAY[$this->getTicket()->getTicketStatus()]);
     }
 
     /**

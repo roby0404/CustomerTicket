@@ -2,6 +2,8 @@
 
 namespace Inchoo\CustomerTicket\Ui\Component;
 
+use Inchoo\CustomerTicket\Api\Data\TicketInterface;
+
 /**
  * Class TicketDataProvider
  * @package Inchoo\CustomerTicket\Ui\Component
@@ -55,7 +57,7 @@ class TicketDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
         $customer = $this->customerRepository->getById($ticket['customer_id']);
 
-        $ticket['ticket_status'] = ucfirst($ticket['ticket_status']);
+        $ticket['ticket_status'] = ucfirst(TicketInterface::TICKET_STATUS_ARRAY[$ticket['ticket_status']]);
         $ticket['customer_name'] = $customer->getFirstname();
         $ticket['customer_email'] = $customer->getEmail();
         $ticket['reply_message'] = '';

@@ -49,9 +49,13 @@ interface TicketInterface
     ];
 
     const TICKET_STATUS_ARRAY = [
-        '0' => 'open',
-        '1' => 'reopen requested',
-        '2' => 'closed'
+        0 => 'Open',
+        1 => 'Reopen Requested',
+        2 => 'Closed'
     ];
+
+    const OPEN = 0;
+    const REOPEN_REQUESTED = 1;
+    const CLOSED = 2;
 
 }

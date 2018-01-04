@@ -97,7 +97,6 @@ class SaveTicket extends AbstractTicket
             $ticket->setWebsiteId($this->storeManager->getStore()->getWebsiteId());
             $ticket->setTicketSubject($data['subject']);
             $ticket->setTicketMessage($data['message']);
-            $ticket->setTicketStatus('open');
 
             if($this->urgencyIndicatorConfig->isEnabled()) {
                 $ticket->setTicketUrgency($data['ticket_urgency']);

@@ -105,7 +105,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      */
     public function close(TicketInterface $ticket)
     {
-        $ticket->setTicketStatus('closed');
+        $ticket->setTicketStatus(TicketInterface::CLOSED);
         try {
             $this->ticketResource->save($ticket);
         } catch (\Exception $exception) {
@@ -122,7 +122,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      */
     public function requestReopen(TicketInterface $ticket)
     {
-        $ticket->setTicketStatus('reopen requested');
+        $ticket->setTicketStatus(TicketInterface::REOPEN_REQUESTED);
         try {
             $this->ticketResource->save($ticket);
         } catch (\Exception $exception) {
@@ -154,7 +154,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
     {
         $ticket = $this->ticketFactory->create();
         $this->ticketResource->load($ticket, $ticketId);
-        if($ticket->getTicketStatus() == 'closed') {
+        if($ticket->getTicketStatus() == TicketInterface::CLOSED) {
             return true;
         }
         return false;
@@ -168,7 +168,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
     {
         $ticket = $this->ticketFactory->create();
         $this->ticketResource->load($ticket, $ticketId);
-        if($ticket->getTicketStatus() == 'reopen requested') {
+        if($ticket->getTicketStatus() == TicketInterface::REOPEN_REQUESTED) {
             return true;
         }
         return false;
@@ -182,7 +182,7 @@ class TicketRepository implements \Inchoo\CustomerTicket\Api\TicketRepositoryInt
      */
     public function reopen(TicketInterface $ticket)
     {
-        $ticket->setTicketStatus('open');
+        $ticket->setTicketStatus(TicketInterface::OPEN);
         try {
             $this->ticketResource->save($ticket);
         } catch (\Exception $exception) {

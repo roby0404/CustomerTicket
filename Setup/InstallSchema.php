@@ -51,9 +51,9 @@ class InstallSchema implements InstallSchemaInterface
             'Ticket message'
         )->addColumn(
             'ticket_status',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            50,
-            ['nullable' => false],
+            \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+            null,
+            ['nullable' => false, 'unsigned' => true, 'default' => 0],
             'Ticket status'
         )->addColumn(
             'created_at',

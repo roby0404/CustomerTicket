@@ -83,7 +83,6 @@
             <settings>
                 <filter>text</filter>
                 <label translate="true">Ticket urgency</label>
-                <sorting>false</sorting>
             </settings>
         </column>
 
@@ -99,7 +98,6 @@
                 <filter>dateRange</filter>
                 <dataType>date</dataType>
                 <label translate="true">Submitted</label>
-                <sorting>false</sorting>
             </settings>
         </column>
 

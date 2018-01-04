@@ -112,4 +112,9 @@ class MyTickets extends \Magento\Framework\View\Element\Template
         return "My Tickets";
     }
 
+    public function getTicketStatusArray()
+    {
+        return TicketInterface::TICKET_STATUS_ARRAY;
+    }
+
 }
