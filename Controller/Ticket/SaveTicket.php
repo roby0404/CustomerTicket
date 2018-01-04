@@ -4,6 +4,7 @@ namespace Inchoo\CustomerTicket\Controller\Ticket;
 
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Module\Manager;
 
 /**
  * Class SaveTicket
@@ -21,6 +22,8 @@ class SaveTicket extends AbstractTicket
      * @var \Magento\Framework\App\Request\DataPersistorInterface
      */
     protected $persistor;
+
+    protected $moduleManager;
 
     /**
      * @var \Magento\Customer\Model\Session
@@ -63,6 +66,7 @@ class SaveTicket extends AbstractTicket
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\App\Request\Http $request,
         \Magento\Framework\App\Request\DataPersistorInterface $persistor,
+        \Magento\Framework\Module\Manager $moduleManager,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory $ticketFactory,
@@ -72,6 +76,7 @@ class SaveTicket extends AbstractTicket
     {
         $this->request = $request;
         $this->persistor = $persistor;
+        $this->moduleManager = $moduleManager;
         $this->customerSession = $customerSession;
         $this->storeManager = $storeManager;
         $this->ticketFactory = $ticketFactory;
@@ -101,7 +106,10 @@ class SaveTicket extends AbstractTicket
             try {
                 $this->ticketRepository->save($ticket);
                 $this->messageManager->addSuccessMessage(__('Ticket submitted successfully'));
-                $this->persistor->set('ticket_id', $ticket->getId());
+
+                if($this->moduleManager->isEnabled('Inchoo_TicketMail')) {
+                    $this->persistor->set('ticket_id', $ticket->getId());
+                }
             } catch (CouldNotSaveException $exception) {
                 $this->messageManager->addErrorMessage(__('Ticket is not saved'));
             }

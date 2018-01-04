@@ -52,7 +52,7 @@ class Index extends AbstractTicket
     }
 
     /**
-     * @return \Magento\Framework\View\Result\Page
+     * @return \Magento\Framework\Controller\Result\Redirect|\Magento\Framework\View\Result\Page
      */
     public function execute()
     {
