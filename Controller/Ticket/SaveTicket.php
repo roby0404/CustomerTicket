@@ -4,7 +4,6 @@ namespace Inchoo\CustomerTicket\Controller\Ticket;
 
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Module\Manager;
 
 /**
  * Class SaveTicket
@@ -23,6 +22,9 @@ class SaveTicket extends AbstractTicket
      */
     protected $persistor;
 
+    /**
+     * @var \Magento\Framework\Module\Manager
+     */
     protected $moduleManager;
 
     /**
@@ -55,7 +57,7 @@ class SaveTicket extends AbstractTicket
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\Request\DataPersistorInterface $persistor
-     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
+     * @param \Magento\Framework\Module\Manager $moduleManager
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Inchoo\CustomerTicket\Api\Data\TicketInterfaceFactory $ticketFactory
