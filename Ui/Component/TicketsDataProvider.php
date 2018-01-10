@@ -18,7 +18,7 @@ class TicketsDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     protected $collection;
 
     /**
-     * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface|TicketRepositoryInterface
+     * @var \Inchoo\CustomerTicket\Api\TicketRepositoryInterface
      */
     protected $ticketRepository;
 
@@ -33,7 +33,7 @@ class TicketsDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      * @param string $primaryFieldName
      * @param string $requestFieldName
      * @param \Inchoo\CustomerTicket\Model\ResourceModel\Ticket\CollectionFactory $ticketCollectionFactory
-     * @param TicketRepositoryInterface $ticketRepository
+     * @param \Inchoo\CustomerTicket\Api\TicketRepositoryInterface $ticketRepository
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param array $meta
      * @param array $data

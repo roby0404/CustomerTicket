@@ -27,7 +27,8 @@ class Textarea extends \Magento\Ui\Component\Form\Element\Textarea
         array $data = []
     )
     {
-        if($ticketRepository->isTicketClosed($request->getParam(TicketInterface::TICKET_ID)) || $ticketRepository->isReopenRequested($request->getParam(TicketInterface::TICKET_ID))) {
+        if($ticketRepository->isTicketClosed($request->getParam(TicketInterface::TICKET_ID))
+            || $ticketRepository->isReopenRequested($request->getParam(TicketInterface::TICKET_ID))) {
             $data = [];
         }
         parent::__construct($context, $components, $data);

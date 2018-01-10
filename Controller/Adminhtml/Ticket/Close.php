@@ -2,7 +2,6 @@
 
 namespace Inchoo\CustomerTicket\Controller\Adminhtml\Ticket;
 
-use Inchoo\CustomerTicket\Controller\Adminhtml\Ticket\AbstractTicket;
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;

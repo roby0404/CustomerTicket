@@ -2,7 +2,6 @@
 
 namespace Inchoo\CustomerTicket\Block;
 
-use Inchoo\CustomerTicket\Model\Ticket;
 use Magento\Framework\Api\SortOrder;
 use Inchoo\CustomerTicket\Api\Data\TicketInterface;
 
@@ -112,6 +111,9 @@ class MyTickets extends \Magento\Framework\View\Element\Template
         return "My Tickets";
     }
 
+    /**
+     * @return array
+     */
     public function getTicketStatusArray()
     {
         return TicketInterface::TICKET_STATUS_ARRAY;

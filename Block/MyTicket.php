@@ -18,7 +18,7 @@ class MyTicket extends \Magento\Framework\View\Element\Template
     protected $request;
 
     /**
-     * @var Registry|\Magento\Framework\Registry
+     * @var \Magento\Framework\Registry
      */
     protected $registry;
 

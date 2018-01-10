@@ -48,7 +48,6 @@ class Reopen implements \Magento\Framework\View\Element\UiComponent\Control\Butt
      */
     public function getButtonData()
     {
-        $data = [];
 
         if($this->ticketRepository->isReopenRequested($this->request->getParam(TicketInterface::TICKET_ID))) {
             return [
@@ -61,7 +60,7 @@ class Reopen implements \Magento\Framework\View\Element\UiComponent\Control\Butt
             ];
         }
 
-        return $data;
+        return [];
     }
 
 }
